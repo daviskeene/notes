@@ -1,19 +1,7 @@
-# Typefaster
+# Rantdoc
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dandiws/typefaster/blob/main/LICENSE)
 
-Typefaster is a clean and minimal typing test insipired by [Monkeytype](https://monkeytype.com).
+A place to rant about your problems. Type for as long as you need, and yell for comedic effect.
 
-# Features
-
-- Clean and minimal look
-- Real typing feel and look
-- What you type is what you see
-- Color themes
-- Multilanguage support
-
-# Built with
-
-- React.js
-- Theme-ui
-- 💗
+Made with React & Theme UI.
