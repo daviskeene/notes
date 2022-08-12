@@ -1,10 +1,12 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { Box, Flex, Input, Textarea } from 'theme-ui'
+import { Box, Flex, Textarea } from 'theme-ui'
 
 const TypingArea = memo(() => {
   const inputRef = useRef()
   const [blur, setBlur] = useState(false)
   const [value, setValue] = useState('');
+
+  const ABOUT_TEXT = '/rant is a no-distractions text document where you can freely write your thoughts.\nstart typing...'
 
   const focusInput = useCallback(() => {    
     return inputRef.current.focus()
@@ -23,7 +25,7 @@ const TypingArea = memo(() => {
       setValue(newValue);
       window.scrollTo(0, document.body.scrollHeight);
     }
-  )
+   , [])
 
   useEffect(() => {
     const isInputFocused =
@@ -36,7 +38,10 @@ const TypingArea = memo(() => {
 
 
   return (
-    <Box>
+    <Box
+      sx={{
+        padding: '4em 0 4em 0'
+      }}>
       <Box
         sx={{
           bg: 'rgba(0,0,0,0)',
@@ -72,12 +77,11 @@ const TypingArea = memo(() => {
             border={'1px solid text'}
             sx={{
               width: 10,
-              position: 'absolute',
               opacity: 0,
               position: 'fixed',
             }}
           />
-          {value ? value : 'Start typing...'}
+          {value ? value : ABOUT_TEXT}
         </Box>
       </Box>
       {blur && (
@@ -101,7 +105,7 @@ const TypingArea = memo(() => {
           {(
             <>
               <div>
-                Click to focus.
+                Refocus...
               </div>
             </>
           )}

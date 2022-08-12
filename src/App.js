@@ -1,13 +1,11 @@
-import { Box, Flex, Heading, Link, Select } from 'theme-ui'
+import { Box, Flex, Heading, Select } from 'theme-ui'
 import TypingArea from 'components/TypingArea'
 import useConfigStore from './store/config'
-import { TypingStoreProvider } from './store/typing'
-import { CHANGE_LANGUAGE } from './store/config/action'
-import { language, theme } from './utils/constant'
+import { theme } from './utils/constant'
 import { useCallback } from 'react'
 
 const App = () => {
-  const { config, dispatch, setTheme } = useConfigStore()
+  const { config, setTheme } = useConfigStore()
 
   const handleSelectThemeChange = useCallback(
     (e) => {
@@ -15,17 +13,6 @@ const App = () => {
       setTheme(selectedValue)
     },
     [setTheme]
-  )
-
-  const handleSelectLanguageChange = useCallback(
-    (e) => {
-      const selectedValue = e.target.options[e.target.selectedIndex].value
-      dispatch({
-        type: CHANGE_LANGUAGE,
-        payload: { lang: selectedValue },
-      })
-    },
-    [dispatch]
   )
 
   return (
@@ -40,9 +27,10 @@ const App = () => {
         minHeight: '100vh',
       }}
     >
+      <Heading>/rant</Heading>
       <Flex
         sx={{
-          minHeight: 105,
+          minHeight: 80,
           flexGrow: 1,
           flexDirection: 'column',
           justifyContent: 'center',
