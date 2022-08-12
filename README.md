@@ -5,4 +5,4 @@
 [![React](https://img.shields.io/badge/-React-yellowgreen)](https://reactjs.org/)
 [![React](https://img.shields.io/badge/-Theme%20UI-blue)](https://reactjs.org/)
 
-A private text document without distractions.
+A personal, shareable text document without distractions.
