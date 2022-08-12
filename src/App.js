@@ -1,11 +1,18 @@
-import { Box, Flex, Heading, Select } from 'theme-ui'
+import { Box, Flex, Select, Button } from 'theme-ui'
 import TypingArea from 'components/TypingArea'
 import useConfigStore from './store/config'
 import { theme } from './utils/constant'
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 
 const App = () => {
   const { config, setTheme } = useConfigStore()
+  const typingRef = useRef();
+
+  let search = window.location.search;
+  let params = new URLSearchParams(search);
+  if (params.get('theme')) {
+    setTheme(params.get('theme'))
+  }
 
   const handleSelectThemeChange = useCallback(
     (e) => {
@@ -14,6 +21,11 @@ const App = () => {
     },
     [setTheme]
   )
+
+  const copyTextToClipboard = () => {
+    let copyText = encodeURIComponent(typingRef.current.value)
+    navigator.clipboard.writeText(typingRef.current.baseURI.slice(0, typingRef.current.baseURI.lastIndexOf('/')) + '?text=' + copyText + '&theme=' + config.theme)
+  }
 
   return (
     <Flex
@@ -27,7 +39,6 @@ const App = () => {
         minHeight: '100vh',
       }}
     >
-      <Heading>/rant</Heading>
       <Flex
         sx={{
           minHeight: 80,
@@ -36,7 +47,7 @@ const App = () => {
           justifyContent: 'center',
         }}
       >
-          <TypingArea />
+          <TypingArea inputRef={typingRef} />
           <Box
             sx={{
               mt: 4,
@@ -68,6 +79,16 @@ const App = () => {
               </option>
             ))}
           </Select>
+          <Button sx={{marginLeft: '1em',
+                      color: 'text',
+                      backgroundColor: 'rgba(0,0,0,0)',
+                      border: '1px solid text',
+                      ':hover' : {backgroundColor: 'text',
+                                  color: 'background'}}}
+            onClick={() => copyTextToClipboard()}
+            >
+            Copy Link
+          </Button>
         </Flex>
       </Flex>
     </Flex>

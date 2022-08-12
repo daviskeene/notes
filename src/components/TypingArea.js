@@ -1,23 +1,18 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
-import { Box, Flex, Textarea } from 'theme-ui'
+import React, { memo, useCallback, useEffect, useState } from 'react'
+import { Box, Textarea } from 'theme-ui'
 
-const TypingArea = memo(() => {
-  const inputRef = useRef()
-  const [blur, setBlur] = useState(false)
-  const [value, setValue] = useState('');
+const TypingArea = memo(({ inputRef }) => {
 
-  const ABOUT_TEXT = '/rant is a no-distractions text document where you can freely write your thoughts.\nstart typing...'
+  let search = window.location.search;
+  let params = new URLSearchParams(search);
+
+  const [value, setValue] = useState(params.get('text') || '');
+
+  const ABOUT_TEXT = '/notes is an online text document where you can freely write your thoughts. No distractions. Just start typing.\n>'
 
   const focusInput = useCallback(() => {    
     return inputRef.current.focus()
-  }, [])
-
-  const handleOverlayClick = useCallback(
-    (e) => {
-      focusInput()
-    },
-    [focusInput]
-  )
+  }, [inputRef])
 
   const handleInputChange = useCallback(
     (e) => {
@@ -28,26 +23,27 @@ const TypingArea = memo(() => {
    , [])
 
   useEffect(() => {
-    const isInputFocused =
-      inputRef.current && inputRef.current === document.activeElement
 
-    if (isInputFocused) setBlur(false)
-    else setBlur(true)
+    // in the event that there's already text loaded,
+    // make sure the cursor is at the end
+    focusInput();
+    var val = inputRef.current.value;
+    inputRef.current.value = '';
+    inputRef.current.value = val;
 
-  }, [inputRef])
+  }, [focusInput, inputRef])
 
 
   return (
     <Box
       sx={{
         padding: '4em 0 4em 0'
-      }}>
+      }}
+      onClick={() => focusInput()}>
       <Box
         sx={{
           bg: 'rgba(0,0,0,0)',
           borderRadius: 5,
-          filter: blur && 'blur(5px)',
-          opacity: blur && 0.25,
         }}
       >
         <Box
@@ -69,10 +65,6 @@ const TypingArea = memo(() => {
             onChange={handleInputChange}
             maxHeight={'2em'}
             overflow={'scroll'}
-            onBlur={() => {
-              setBlur(true)
-            }}
-            onFocus={() => setBlur(false)}
             autoFocus
             border={'1px solid text'}
             sx={{
@@ -81,36 +73,9 @@ const TypingArea = memo(() => {
               position: 'fixed',
             }}
           />
-          {value ? value : ABOUT_TEXT}
+          {value ? '> ' + value.replace(/([\n])/g, '$1> ') : ABOUT_TEXT}
         </Box>
       </Box>
-      {blur && (
-        <Flex
-          onClick={handleOverlayClick}
-          sx={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            left: 0,
-            top: 0,
-            justifyContent: 'center',
-            alignItems: 'center',
-            color: 'text',
-            fontWeight: 500,
-            cursor: 'pointer',
-            fontSize: 20,
-            flexDirection: 'column',
-          }}
-        >
-          {(
-            <>
-              <div>
-                Refocus...
-              </div>
-            </>
-          )}
-        </Flex>
-      )}
     </Box>
   )
 })
