@@ -1,18 +1,21 @@
-import { Box, Flex, Select, Button } from 'theme-ui'
+import { Box, Flex, Select, Button, Link } from 'theme-ui'
 import TypingArea from 'components/TypingArea'
 import useConfigStore from './store/config'
 import { theme } from './utils/constant'
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 const App = () => {
   const { config, setTheme } = useConfigStore()
   const typingRef = useRef();
 
-  let search = window.location.search;
-  let params = new URLSearchParams(search);
-  if (params.get('theme')) {
-    setTheme(params.get('theme'))
-  }
+  useEffect(() => {
+    let search = window.location.search;
+    let params = new URLSearchParams(search);
+    if (params.get('theme')) {
+      setTheme(params.get('theme'))
+  }}
+
+  ,[setTheme])
 
   const handleSelectThemeChange = useCallback(
     (e) => {
@@ -65,7 +68,7 @@ const App = () => {
         }}
       >
         <Box sx={{ mb: 3 }}>
-          &copy; {new Date().getFullYear()} / Davis Keene
+          <Link href={'https://daviskeene.com'} sx={{textDecoration: 'none', color: 'text'}}>Davis Keene</Link> &copy; {new Date().getFullYear()}
         </Box>
         <Flex sx={{ mb: 3 }}>
           <Select
@@ -81,10 +84,14 @@ const App = () => {
           </Select>
           <Button sx={{marginLeft: '1em',
                       color: 'text',
-                      backgroundColor: 'rgba(0,0,0,0)',
+                      backgroundColor: 'background',
                       border: '1px solid text',
                       ':hover' : {backgroundColor: 'text',
-                                  color: 'background'}}}
+                                  color: 'background'},
+                       ':active' : {
+                        color: 'text',
+                        backgroundColor: 'background',
+                       }}}
             onClick={() => copyTextToClipboard()}
             >
             Copy Link
