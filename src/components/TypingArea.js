@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { Box, Textarea } from 'theme-ui'
+import ReactMarkdown from 'react-markdown'
 
 const TypingArea = memo(({ inputRef }) => {
 
@@ -8,7 +9,7 @@ const TypingArea = memo(({ inputRef }) => {
 
   const [value, setValue] = useState(params.get('text') || '');
 
-  const ABOUT_TEXT = '/notes is an online text document where you can freely write your thoughts. No distractions. Just start typing.\n>'
+  const ABOUT_TEXT = '/notes is an online text document where you can freely write your thoughts. No distractions. Markdown support. Just start typing.\n>'
 
   const focusInput = useCallback(() => {    
     return inputRef.current.focus()
@@ -73,7 +74,9 @@ const TypingArea = memo(({ inputRef }) => {
               position: 'fixed',
             }}
           />
-          {value ? '> ' + value.replace(/([\n])/g, '$1> ') : ABOUT_TEXT}
+          <ReactMarkdown>
+            {value ? value + '&nbsp;' : ABOUT_TEXT}
+          </ReactMarkdown>
         </Box>
       </Box>
     </Box>
